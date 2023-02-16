@@ -1,0 +1,8 @@
+# servers holds the idrac addresses. All of these hosts will download the discover iso.
+[servers]
+{{ servers }}
+
+[servers:vars]
+ansible_connection=ssh
+ansible_user=root
+ansible_ssh_pass={{ ansible_ssh_pass }}

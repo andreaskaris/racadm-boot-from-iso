@@ -1,0 +1,39 @@
+# The original version of this playbook is from larsks and can be found under
+# https://gist.github.com/larsks/afd6cb2a3c88447c726d66fc86141184
+- hosts: servers
+  gather_facts: false
+  tasks:
+    - name: ensure system is powered off
+      tags: [power.off]
+      raw: racadm serveraction powerdown
+      register: res
+      failed_when: >-
+        "error" in res.stdout.lower()
+    - name: disconnect virtual media
+      tags: [media, media.disconnect]
+      raw: racadm remoteimage -d
+      register: res
+      failed_when: >-
+        "error" in res.stdout.lower()
+    - name: connect virtual media
+      tags: [media, media.connect]
+      raw: racadm remoteimage -c -u "" -p "" -l {{ image_location }}
+      register: res
+      failed_when: >-
+        "Remote Image is now Configured" not in res.stdout
+    - name: configure bootonce
+      raw: racadm set iDRAC.VirtualMedia.BootOnce 1
+      register: res
+      failed_when: >-
+        "error" in res.stdout.lower()
+    - name: configure boot device
+      raw: racadm set iDRAC.ServerBoot.FirstBootDevice VCD-DVD
+      register: res
+      failed_when: >-
+        "error" in res.stdout.lower()
+    - name: power on system
+      tags: [power.on]
+      raw: racadm serveraction powerup
+      register: res
+      failed_when: >-
+        "error" in res.stdout.lower()
