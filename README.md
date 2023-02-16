@@ -17,3 +17,8 @@ Now, deploy the image to your servers:
 ~~~
 make deploy_openshift
 ~~~
+
+# Credit where credit is due
+
+The original version of this playbook is from larsks and can be found under
+https://gist.github.com/larsks/afd6cb2a3c88447c726d66fc86141184
