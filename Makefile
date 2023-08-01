@@ -1,6 +1,7 @@
-hosts: ## Create hosts file. Provide parameters SERVERS=<idrac IP address of OCP hosts>, PASS=<idrac password>. Will only run if hosts does not exist.
+hosts: ## Create hosts file. Provide parameters SERVERS=<idrac IP address of server>, USER=<idrac username>, PASS=<idrac password>. Will only run if hosts does not exist.
 	\cp hosts.j2 hosts
 	sed -i 's/{{ servers }}/$(SERVERS)/' hosts
+	sed -i 's/{{ ansible_ssh_user }}/$(USER)/' hosts
 	sed -i 's/{{ ansible_ssh_pass }}/$(PASS)/' hosts
 	cp group_vars/all.yml.j2 group_vars/all.yml
 
