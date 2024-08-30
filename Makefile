@@ -13,6 +13,10 @@ endif
 	sed -i '/^image_location:.*/d' group_vars/all.yml
 	echo "image_location: $(IMAGE_LOCATION)" >> group_vars/all.yml
 
+.PHONY: shutdown_host
+shutdown_host: ## Shutdown hosts.
+	ansible-playbook deploy_host.yml --tags "power.off"
+
 .PHONY: deploy_host
 deploy_host: ## Deploy hosts.
 	ansible-playbook deploy_host.yml
